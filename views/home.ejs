@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head><title>ASCE|Events</title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="author" content="Anant Kakrania">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
+<link rel="stylesheet" href="../stylesheets/login-style.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+<div class="pc-menu-fixed">
+<div class="row">
+<div class="col-xs-12 wel-bar">
+<div class="username col-xs-3">
+<p><span><i class="fa fa-user-circle"></i>Hi,<%user.username%></p>
+</div>
+<div style="float:right;margin-top:10px;color:black;" class="col-sm-2">
+<form>
+	<input type="text" name="ques" placeholder="Ask A question"></input>
+	<input type="button" value="Ask" onclick="sendRequest()"></input>
+</form>
+</div>
+</div>
+</div>
+<div class="row">
+<ul class="side-list col-sm-3 col-md-2">
+  <li class="col-xs-12"><a class="active" href="profile.html">Home</a></li>
+  <li class="col-xs-12"><a href="profile-workshop.html">Notifications</a></li>
+  <li class="col-xs-12"><a href="profile-accomodation.html">Links</a></li>
+  <li class="col-xs-12"><a href="profile-tshirt.html">Questions Asked</a></li>
+  <li class="col-xs-12"><a href="/signout">Logout</a></li>
+  </ul>
+</div>
+</div>
+<div class="mobile-menu-fixed">
+<div class="row">
+<div class="col-xs-12 wel-bar">
+<div class="col-xs-3" style="text-align:center;">
+<div id="nav-icon1">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+</div>
+<div style="float:right;text-align:center;" class="col-xs-5">
+<form>
+	<input type="text" placeholder="Ask A question"></input>
+	<input type="button" value="Ask" onclick="sendRequest()"></input>
+</form>
+</div>
+</div>
+</div>
+<div class="row">
+<ul class="side-list-mobile col-xs-12 col-md-2">
+  <li class="col-xs-12"><a class="active" href="profile.html">Home</a></li>
+  <li class="col-xs-12"><a href="profile-workshop.html">Notifications</a></li>
+  <li class="col-xs-12"><a href="profile-accomodation.html">Questions</a></li>
+  <li class="col-xs-12"><a href="profile-tshirt.html">Links</a></li>
+  <li class="col-xs-12"><a href="#about">Logout</a></li>
+</ul>
+</div>
+</div>
+<div class="wel-bar-altr" style="width:100%;">
+</div>
+<div class="side-menu-altr col-sm-3 col-md-2" style="opacity:1;"></div>
+<div class="cont col-sm-9 col-md-10">
+<h1 class="heading">Answers</h1>
+	<div class="content col-sm-12"></div>
+ </div>
+</body>
+<script>
+$(document).ready(function(){
+  $('#nav-icon1').click(function(){
+    $(this).toggleClass('open');
+    $(".side-list-mobile").toggleClass("wide");
+  });
+  var h=$(window).height();
+  var x=$(".wel-bar").height();
+  $(".side-list").css("height",(h-x)+'px');
+  $(".wel-bar-altr").css("height",x+'px');
+  $(".side-menu-altr").css("height",($(document).height()-x)+'px');
+  var w=$(window).width();
+  if(w<768)
+  {
+    $(".mobile-menu-fixed").css("display","block");
+    $(".pc-menu-fixed").css("display","none");
+    $(".side-menu-altr").css("display","none");
+
+  }
+  else
+  {
+    $(".pc-menu-fixed").css("display","block");
+    $(".mobile-menu-fixed").css("display","none");
+  }
+});
+  function sendRequest()
+  {
+  				$.ajax({
+				url: "/home",
+				data: $('form').serialize(),
+				type: "POST",
+				success: function (data) {
+					console.log("success");
+					console.log(data);
+					$('.content').html('');
+					$.each(data,function(index,val){
+						console.log(val);
+						$('.content').add('<div><p>' +  val + '</p></div>')
+					});
+				},
+				error: function (data) {
+					swal("OOPS", "Not Found", "error");
+				}
+			});	
+  }
+</script>
+</html>
